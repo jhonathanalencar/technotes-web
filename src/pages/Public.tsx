@@ -3,7 +3,7 @@ import { SignIn } from 'phosphor-react';
 
 export function Public() {
   return (
-    <section className="h-full flex flex-col p-4 bg-home-background bg-right-bottom bg-cover bg-slate-800 bg-blend-multiply">
+    <section className="h-full flex flex-col p-4">
       <header className="border-b-2 border-gray-500 py-4 md:py-6">
         <h2 className="text-gray-100 font-semibold text-3xl md:text-4xl">
           Seja bem vindo(a) à JH Reparos!
