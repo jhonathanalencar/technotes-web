@@ -1,3 +1,3 @@
 export function NotesList() {
-  return <div>notes</div>;
+  return <div className="text-gray-300">notes</div>;
 }
