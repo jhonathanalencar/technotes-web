@@ -8,3 +8,13 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type Note = {
+  id: string;
+  userId: string;
+  title: string;
+  text: string;
+  completed: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
