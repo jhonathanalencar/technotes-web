@@ -18,3 +18,9 @@ export type Note = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type QueryError = {
+  data?: {
+    error: string;
+  };
+};

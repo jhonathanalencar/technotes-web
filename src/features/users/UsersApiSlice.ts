@@ -21,7 +21,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: '/users',
         method: 'GET',
         validateStatus: (response, result) => {
-          console.log(result);
           return response.status === 200 && !result.error;
         },
       }),

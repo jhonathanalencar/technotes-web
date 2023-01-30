@@ -16,16 +16,17 @@ export function Welcome() {
       <div className="flex flex-col items-start gap-4">
         <Link
           to="/dashboard/notes"
-          className="flex items-center gap-2 text-gray-300 text-lg md:text-xl hover:text-gray-100"
+          className="flex items-center gap-2 text-gray-300 text-lg md:text-xl hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline focus:underline-offset-2"
         >
-          <ArrowRight weight="bold" />
+          <ArrowRight className="text-green-500" weight="bold" />
           Ver notas técnicas
         </Link>
         <Link
           to="/dashboard/users"
-          className="flex items-center gap-2 text-gray-300 text-lg md:text-xl hover:text-gray-100"
+          className="flex items-center gap-2 text-gray-300 text-lg md:text-xl hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline focus:underline-offset-2"
         >
-          <ArrowRight weight="bold" /> Ver Configurações de Usuários
+          <ArrowRight className="text-green-500" weight="bold" /> Ver
+          Configurações de Usuários
         </Link>
       </div>
     </section>

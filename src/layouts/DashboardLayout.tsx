@@ -4,7 +4,12 @@ export function DashboardLayout() {
   return (
     <section className="h-full flex flex-col p-4">
       <header className="text-gray-100 text-3xl font-bold md:text-4xl border-b-2 border-gray-500 py-4 md:py-6">
-        <Link to="/dashboard">techNotes</Link>
+        <Link
+          to="/dashboard"
+          className=" rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-4 focus:ring-offset-zinc-900"
+        >
+          techNotes
+        </Link>
       </header>
       <main className="flex-1">
         <Outlet />
