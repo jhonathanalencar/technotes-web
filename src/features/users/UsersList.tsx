@@ -49,7 +49,7 @@ export function UsersList() {
               <th className={thStyles}>Usuário</th>
               <th className={thStyles}>Funções</th>
               <th className={thStyles}>Status</th>
-              <th className={thStyles}>Data Cadastro</th>
+              <th className={thStyles}>Cadastro</th>
               <th className={thStyles}>Editar</th>
             </tr>
           </thead>

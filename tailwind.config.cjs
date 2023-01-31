@@ -6,6 +6,9 @@ module.exports = {
       backgroundImage: {
         'tech-background': "url('/src/assets/tech-background.jpg')",
       },
+      screens: {
+        xsm: { raw: '(min-width: 450px)' },
+      },
     },
   },
   plugins: [],

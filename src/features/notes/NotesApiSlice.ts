@@ -6,11 +6,17 @@ import {
 
 import { apiSlice } from '../../redux/api/apiSlice';
 import { RootState } from '../../redux/store';
-import { Note } from '../../shared/types';
+import { Note, User } from '../../shared/types';
 
-type GetNotesResponse = (Omit<Note, 'id'> & { _id: string })[];
+type GetNotesResponse = (Omit<Note, 'id' | 'owner'> & {
+  _id: string;
+  user: User;
+})[];
 
-const notesAdapter = createEntityAdapter<Note>({});
+const notesAdapter = createEntityAdapter<Note>({
+  sortComparer: (a, b) =>
+    a.completed === b.completed ? 0 : a.completed ? 1 : -1,
+});
 
 const initialState = notesAdapter.getInitialState();
 
@@ -35,6 +41,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
             completed: note.completed,
             createdAt: note.createdAt,
             updatedAt: note.updatedAt,
+            owner: note.user.username,
           };
         });
 

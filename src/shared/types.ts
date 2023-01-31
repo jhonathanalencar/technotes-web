@@ -17,6 +17,7 @@ export type Note = {
   completed: boolean;
   createdAt: Date;
   updatedAt: Date;
+  owner: string;
 };
 
 export type QueryError = {
