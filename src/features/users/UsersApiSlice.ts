@@ -14,6 +14,13 @@ type CreateUserData = {
   password: string;
   roles: Role[];
 };
+type UpdateUserData = {
+  id: string;
+  username: string;
+  roles: Role[];
+  active: boolean;
+  password?: string;
+};
 
 const usersAdapter = createEntityAdapter<User>();
 
@@ -56,14 +63,24 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       },
     }),
     createUser: builder.mutation<User, CreateUserData>({
-      query: (user) => ({
+      query: (data) => ({
         url: '/users',
         method: 'POST',
         body: {
-          ...user,
+          ...data,
         },
       }),
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    updateUser: builder.mutation<void, UpdateUserData>({
+      query: (data) => ({
+        url: '/users',
+        method: 'PATCH',
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
     }),
   }),
 });
