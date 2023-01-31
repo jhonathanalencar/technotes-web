@@ -6,9 +6,14 @@ import {
 
 import { apiSlice } from '../../redux/api/apiSlice';
 import { RootState } from '../../redux/store';
-import { User } from '../../shared/types';
+import { Role, User } from '../../shared/types';
 
 type GetUsersResponse = (Omit<User, 'id'> & { _id: string })[];
+type CreateUserData = {
+  username: string;
+  password: string;
+  roles: Role[];
+};
 
 const usersAdapter = createEntityAdapter<User>();
 
@@ -49,6 +54,16 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           return [{ type: 'User', id: 'LIST' }];
         }
       },
+    }),
+    createUser: builder.mutation<User, CreateUserData>({
+      query: (user) => ({
+        url: '/users',
+        method: 'POST',
+        body: {
+          ...user,
+        },
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
   }),
 });
