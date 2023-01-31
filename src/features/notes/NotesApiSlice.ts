@@ -12,6 +12,20 @@ type GetNotesResponse = (Omit<Note, 'id' | 'owner'> & {
   _id: string;
   user: User;
 })[];
+type CreateNoteData = {
+  userId: string;
+  title: string;
+  text: string;
+};
+type UpdateNoteData = {
+  id: string;
+  title: string;
+  text: string;
+  completed: boolean;
+};
+type DeleteNoteData = {
+  id: string;
+};
 
 const notesAdapter = createEntityAdapter<Note>({
   sortComparer: (a, b) =>
@@ -58,10 +72,50 @@ export const notesApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    createNote: builder.mutation<Note, CreateNoteData>({
+      query: (data) => ({
+        url: '/notes',
+        method: 'POST',
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: [{ type: 'Note', id: 'LIST' }],
+    }),
+    updateNote: builder.mutation<void, UpdateNoteData>({
+      query: (data) => ({
+        url: '/notes',
+        method: 'PUT',
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Note', id: arg.id }],
+    }),
+    deleteNote: builder.mutation<void, DeleteNoteData>({
+      query: ({ id }) => ({
+        url: '/notes',
+        method: 'DELETE',
+        body: {
+          id,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        {
+          type: 'Note',
+          id: arg.id,
+        },
+      ],
+    }),
   }),
 });
 
-export const { useGetNotesQuery } = notesApiSlice;
+export const {
+  useGetNotesQuery,
+  useCreateNoteMutation,
+  useUpdateNoteMutation,
+  useDeleteNoteMutation,
+} = notesApiSlice;
 
 export const selectNotesResult = notesApiSlice.endpoints.getNotes.select();
 
