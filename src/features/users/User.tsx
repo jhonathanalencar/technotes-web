@@ -29,7 +29,7 @@ export function User({ userId }: UserProps) {
   return (
     <tr
       data-active={isActive}
-      className="bg-zinc-700 text-zinc-200 font-medium text-lg md:even:bg-zinc-800 block w-full text-right md:w-auto md:table-row rounded mb-2 md:mb-0 data-[active=false]:opacity-50"
+      className="bg-zinc-700 text-zinc-200 font-medium text-lg md:even:bg-zinc-800 block w-full text-right md:w-auto md:table-row rounded mb-2 md:mb-0 data-[active=false]:opacity-70"
     >
       <td data-label="Usuário" className={tdStyles}>
         {user.username}
