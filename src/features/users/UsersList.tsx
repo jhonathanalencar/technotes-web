@@ -6,6 +6,7 @@ import { QueryError } from '../../shared/types';
 import { Loader } from '../../components/Loader';
 import { ErrorMessage } from '../../components/ErrorMessage';
 import { User } from './User';
+import { GoBackHeader } from '../../components';
 
 export function UsersList() {
   const {
@@ -43,7 +44,9 @@ export function UsersList() {
 
     content = (
       <section className="my-6">
-        <table className="w-full max-w-5xl mx-auto text-left border-collapse rounded overflow-hidden shadow-sm">
+        <GoBackHeader>Usuários</GoBackHeader>
+
+        <table className="w-full max-w-5xl mx-auto mt-8 text-left border-collapse rounded overflow-hidden shadow-sm">
           <thead className="bg-teal-700 text-zinc-100 border-b-2 border-zinc-800 hidden md:table-header-group">
             <tr>
               <th className={thStyles}>Usuário</th>

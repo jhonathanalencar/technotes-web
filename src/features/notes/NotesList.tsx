@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ErrorMessage, Loader } from '../../components';
+import { ErrorMessage, GoBackHeader, Loader } from '../../components';
 
 import { QueryError } from '../../shared/types';
 import { Note } from './Note';
@@ -43,7 +43,9 @@ export function NotesList() {
 
     content = (
       <section className="mt-4">
-        <table className="w-full max-w-6xl mx-auto text-left border-collapse rounded overflow-hidden shadow-sm">
+        <GoBackHeader>Notas</GoBackHeader>
+
+        <table className="w-full max-w-6xl mx-auto mt-8 text-left border-collapse rounded overflow-hidden shadow-sm">
           <thead className="bg-teal-700 text-zinc-100 border-b-2 border-zinc-800">
             <tr>
               <th className={thStyles}>Status</th>
