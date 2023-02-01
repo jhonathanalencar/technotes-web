@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'phosphor-react';
 import { dateFormatter } from '../../utils/formatter';
+import { DashboardLink } from '../../components/DashboardLink';
 
 export function Welcome() {
   return (
@@ -14,27 +13,17 @@ export function Welcome() {
       </h2>
 
       <div className="flex flex-col items-start gap-4">
-        <Link
-          to="/dashboard/notes"
-          className="flex items-center gap-2 text-gray-300 text-lg md:text-xl hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline focus:underline-offset-2"
-        >
-          <ArrowRight className="text-green-500" weight="bold" />
+        <DashboardLink linkTo="/dashboard/notes">
           Ver notas técnicas
-        </Link>
-        <Link
-          to="/dashboard/users"
-          className="flex items-center gap-2 text-gray-300 text-lg md:text-xl hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline focus:underline-offset-2"
-        >
-          <ArrowRight className="text-green-500" weight="bold" /> Ver
-          Configurações de Usuários
-        </Link>
-        <Link
-          to="/dashboard/users/new"
-          className="flex items-center gap-2 text-gray-300 text-lg md:text-xl hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline focus:underline-offset-2"
-        >
-          <ArrowRight className="text-green-500" weight="bold" />
+        </DashboardLink>
+
+        <DashboardLink linkTo="/dashboard/users">
+          Ver Configurações de Usuários
+        </DashboardLink>
+
+        <DashboardLink linkTo="/dashboard/users/new">
           Adicionar novo usuário
-        </Link>
+        </DashboardLink>
       </div>
     </section>
   );
