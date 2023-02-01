@@ -3,6 +3,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Login } from './features/auth/Login';
 import { Welcome } from './features/auth/Welcome';
 import { NotesList } from './features/notes/NotesList';
+import { EditUser } from './features/users/EditUser';
+import { NewUser } from './features/users/NewUser';
 import { UsersList } from './features/users/UsersList';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { DefaultLayout } from './layouts/DefaultLayout';
@@ -31,12 +33,25 @@ const router = createBrowserRouter([
             element: <Welcome />,
           },
           {
-            path: 'notes',
-            element: <NotesList />,
+            path: 'users',
+            children: [
+              {
+                index: true,
+                element: <UsersList />,
+              },
+              {
+                path: ':id',
+                element: <EditUser />,
+              },
+              {
+                path: 'new',
+                element: <NewUser />,
+              },
+            ],
           },
           {
-            path: 'users',
-            element: <UsersList />,
+            path: 'notes',
+            element: <NotesList />,
           },
         ],
       },

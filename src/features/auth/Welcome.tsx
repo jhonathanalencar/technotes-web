@@ -28,6 +28,13 @@ export function Welcome() {
           <ArrowRight className="text-green-500" weight="bold" /> Ver
           Configurações de Usuários
         </Link>
+        <Link
+          to="/dashboard/users/new"
+          className="flex items-center gap-2 text-gray-300 text-lg md:text-xl hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline focus:underline-offset-2"
+        >
+          <ArrowRight className="text-green-500" weight="bold" />
+          Adicionar novo usuário
+        </Link>
       </div>
     </section>
   );

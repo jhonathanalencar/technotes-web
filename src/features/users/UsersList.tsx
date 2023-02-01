@@ -57,7 +57,7 @@ export function UsersList() {
         </table>
       </section>
     );
-  }
+  } else return null;
 
   return content;
 }

@@ -64,7 +64,7 @@ export function NotesList() {
         </table>
       </section>
     );
-  }
+  } else return null;
 
   return content;
 }
