@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { NotePencil } from 'phosphor-react';
 
 import { RootState } from '../../redux/store';
-import { selectNoteById } from './NotesApiSlice';
+import { selectNoteById } from './notesApiSlice';
 
 interface NoteProps {
   noteId: EntityId;

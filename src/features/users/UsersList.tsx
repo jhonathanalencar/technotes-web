@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { useGetUsersQuery } from './UsersApiSlice';
+import { useGetUsersQuery } from './usersApiSlice';
 import { QueryError } from '../../shared/types';
 
 import { Loader } from '../../components/Loader';

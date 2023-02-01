@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { NotePencil } from 'phosphor-react';
 
 import { RootState } from '../../redux/store';
-import { selectUserById } from './UsersApiSlice';
+import { selectUserById } from './usersApiSlice';
 import { useNavigate } from 'react-router-dom';
 
 interface UserProps {

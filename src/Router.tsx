@@ -1,15 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { Login } from './features/auth/Login';
-import { Welcome } from './features/auth/Welcome';
-import { NotesList } from './features/notes/NotesList';
-import { EditUser } from './features/users/EditUser';
-import { NewUser } from './features/users/NewUser';
-import { UsersList } from './features/users/UsersList';
-import { DashboardLayout } from './layouts/DashboardLayout';
-import { DefaultLayout } from './layouts/DefaultLayout';
-import { NotFound } from './pages/NotFound';
-import { Public } from './pages/Public';
+import { Login, Welcome } from './features/auth';
+import { NotesList } from './features/notes';
+import { EditUser, NewUser, UsersList } from './features/users';
+import { DashboardLayout, DefaultLayout } from './layouts';
+import { NotFound, Public } from './pages';
 
 const router = createBrowserRouter([
   {

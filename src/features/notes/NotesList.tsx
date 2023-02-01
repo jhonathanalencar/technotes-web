@@ -3,7 +3,7 @@ import { ErrorMessage, Loader } from '../../components';
 
 import { QueryError } from '../../shared/types';
 import { Note } from './Note';
-import { useGetNotesQuery } from './NotesApiSlice';
+import { useGetNotesQuery } from './notesApiSlice';
 
 export function NotesList() {
   const {

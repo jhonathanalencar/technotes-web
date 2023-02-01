@@ -1,5 +1,6 @@
 import { dateFormatter } from '../../utils/formatter';
-import { DashboardLink } from '../../components/DashboardLink';
+
+import { DashboardLink } from '../../components';
 
 export function Welcome() {
   return (
