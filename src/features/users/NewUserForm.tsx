@@ -29,7 +29,10 @@ const addNewUserSchema = z.object({
       z.object({
         value: z.enum(['Employee', 'Manager', 'Admin']),
         label: z.string(),
-      })
+      }),
+      {
+        required_error: 'usuário precisa ter no mínimo 1 tipo',
+      }
     )
     .min(1, 'usuário precisa ter no mínimo 1 tipo'),
 });
@@ -49,6 +52,7 @@ export function NewUserForm() {
     setValue,
   } = useForm<AddNewUserInputs>({
     resolver: zodResolver(addNewUserSchema),
+    mode: 'all',
   });
 
   const options = Object.keys(userRoles).map((key) => {
@@ -96,7 +100,7 @@ export function NewUserForm() {
           autoComplete="off"
           required
           disabled={isSubmitting}
-          refs={register('username')}
+          {...register('username')}
         />
         {errors.username ? (
           <FormField.Error>{errors.username.message}</FormField.Error>
@@ -111,8 +115,9 @@ export function NewUserForm() {
           placeholder="******"
           required
           disabled={isSubmitting}
-          refs={register('password')}
+          {...register('password')}
         />
+
         {errors.password ? (
           <FormField.Error>{errors.password.message}</FormField.Error>
         ) : null}

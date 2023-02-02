@@ -1,11 +1,10 @@
 import {
+  forwardRef,
   HTMLAttributes,
   InputHTMLAttributes,
   LabelHTMLAttributes,
   ReactNode,
 } from 'react';
-import { RegisterOptions } from 'react-hook-form';
-import { UseFormRegisterReturn } from 'react-hook-form/dist/types';
 
 interface FormFieldRootProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -31,19 +30,19 @@ function FormFieldLabel({ children, ...rest }: FormFieldLabelProps) {
   );
 }
 
-interface FormFieldInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  refs: UseFormRegisterReturn;
-}
+type FormFieldInputProps = InputHTMLAttributes<HTMLInputElement>;
 
-function FormFieldInput({ refs, ...props }: FormFieldInputProps) {
-  return (
-    <input
-      className="w-full h-12 px-4 text-base md:text-lg font-medium text-gray-300 placeholder:text-gray-400 bg-zinc-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-zinc-800"
-      {...refs}
-      {...props}
-    />
-  );
-}
+const FormFieldInput = forwardRef<HTMLInputElement, FormFieldInputProps>(
+  (props, ref) => {
+    return (
+      <input
+        className="w-full h-12 px-4 text-base md:text-lg font-medium text-gray-300 placeholder:text-gray-400 bg-zinc-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-zinc-800"
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
 
 interface FormFieldErrorProps extends HTMLAttributes<HTMLParagraphElement> {
   children: ReactNode;
