@@ -9,7 +9,7 @@ import { userRoles } from '../../shared/data';
 import { useCreateUserMutation } from './usersApiSlice';
 import { QueryError } from '../../shared/types';
 
-import { Button, Loader } from '../../components';
+import { Button, Loader, FormField } from '../../components';
 
 const addNewUserSchema = z.object({
   username: z
@@ -51,11 +51,6 @@ export function NewUserForm() {
     resolver: zodResolver(addNewUserSchema),
   });
 
-  const labelStyles = 'text-lg md:text-xl text-gray-200 font-semibold';
-  const inputStyles =
-    'w-full h-12 px-4 text-base md:text-lg font-medium text-gray-300 placeholder:text-gray-400 bg-zinc-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-zinc-800';
-  const errorStyles = 'text-base font-medium text-red-500';
-
   const options = Object.keys(userRoles).map((key) => {
     return {
       value: key,
@@ -92,47 +87,39 @@ export function NewUserForm() {
         </p>
       ) : null}
 
-      <div className="mb-4">
-        <label htmlFor="username" className={labelStyles}>
-          Nome de usuário
-        </label>
-        <input
+      <FormField.Root>
+        <FormField.Label htmlFor="username">Nome de usuário</FormField.Label>
+        <FormField.Input
           type="text"
           id="username"
           placeholder="Jeenie"
           autoComplete="off"
           required
           disabled={isSubmitting}
-          className={inputStyles}
-          {...register('username')}
+          refs={register('username')}
         />
         {errors.username ? (
-          <p className={errorStyles}>{errors.username.message}</p>
+          <FormField.Error>{errors.username.message}</FormField.Error>
         ) : null}
-      </div>
+      </FormField.Root>
 
-      <div className="mb-4">
-        <label htmlFor="password" className={labelStyles}>
-          Password
-        </label>
-        <input
+      <FormField.Root>
+        <FormField.Label htmlFor="password">Password</FormField.Label>
+        <FormField.Input
           type="password"
           id="password"
           placeholder="******"
-          className={inputStyles}
           required
           disabled={isSubmitting}
-          {...register('password')}
+          refs={register('password')}
         />
         {errors.password ? (
-          <p className={errorStyles}>{errors.password.message}</p>
+          <FormField.Error>{errors.password.message}</FormField.Error>
         ) : null}
-      </div>
+      </FormField.Root>
 
-      <div className="mb-4">
-        <label htmlFor="roles" className={labelStyles}>
-          Tipo de usuário
-        </label>
+      <FormField.Root>
+        <FormField.Label htmlFor="roles">Tipo de usuário</FormField.Label>
         <Controller
           name="roles"
           control={control}
@@ -153,9 +140,9 @@ export function NewUserForm() {
           }}
         />
         {errors.roles ? (
-          <p className={errorStyles}>{errors.roles.message}</p>
+          <FormField.Error>{errors.roles.message}</FormField.Error>
         ) : null}
-      </div>
+      </FormField.Root>
 
       <Button type="submit" disabled={isSubmitting || !isValid}>
         {isLoading ? <Loader isSmall /> : 'Cadastrar'}

@@ -3,10 +3,8 @@ import { ReactNode } from 'react';
 import { useGetUsersQuery } from './usersApiSlice';
 import { QueryError } from '../../shared/types';
 
-import { Loader } from '../../components/Loader';
-import { ErrorMessage } from '../../components/ErrorMessage';
+import { Loader, ErrorMessage, GoBackHeader } from '../../components';
 import { User } from './User';
-import { GoBackHeader } from '../../components';
 
 export function UsersList() {
   const {
@@ -15,7 +13,11 @@ export function UsersList() {
     isSuccess,
     isError,
     error,
-  } = useGetUsersQuery();
+  } = useGetUsersQuery(undefined, {
+    pollingInterval: 60000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   let content: ReactNode;
 
