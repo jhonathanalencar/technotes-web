@@ -2,14 +2,18 @@ import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import * as Checkbox from '@radix-ui/react-checkbox';
-import { Check } from 'phosphor-react';
 
 import { QueryError, Role, User } from '../../shared/types';
 import { userRoles } from '../../shared/data';
 import { useDeleteUserMutation, useUpdateUserMutation } from './usersApiSlice';
 
-import { Button, FormField, Loader, RolesSelect } from '../../components';
+import {
+  Button,
+  Checkbox,
+  FormField,
+  Loader,
+  RolesSelect,
+} from '../../components';
 
 interface EditUserProps {
   user: User;
@@ -24,6 +28,7 @@ const updateUserSchema = z.object({
     .min(1, 'nome é requirido'),
   password: z
     .string()
+    .trim()
     .min(6, 'senha precisa ter no mínimo 6 dígitos')
     .optional()
     .or(z.literal('')),
@@ -182,27 +187,21 @@ export function EditUserForm({ user }: EditUserProps) {
               const { value, onChange, ...rest } = field;
 
               return (
-                <Checkbox.Root
-                  className="h-8 w-8 bg-zinc-900 flex items-center justify-center rounded focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 focus-within:ring-offset-zinc-800 disabled:opacity-70"
+                <Checkbox
                   checked={value}
                   onCheckedChange={onChange}
                   {...rest}
-                >
-                  <Checkbox.Indicator className="h-6 w-6">
-                    <Check className="h-6 w-6 text-green-500" weight="bold" />
-                  </Checkbox.Indicator>
-                </Checkbox.Root>
+                />
               );
             }}
           />
         </div>
       </FormField.Root>
-
       <div className="flex gap-4 mt-8">
         <Button type="submit" disabled={isSubmitting || !isValid}>
           {isLoading ? <Loader isSmall /> : 'Salvar'}
         </Button>
-        <Button variant="red" onClick={handleDeleteUser}>
+        <Button onClick={handleDeleteUser} disabled={delIsLoading}>
           {delIsLoading ? <Loader isSmall /> : 'Deletar'}
         </Button>
       </div>
