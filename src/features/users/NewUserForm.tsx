@@ -1,15 +1,12 @@
-import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { styles } from '../../configs/reactSelect';
-import { userRoles } from '../../shared/data';
 import { useCreateUserMutation } from './usersApiSlice';
 import { QueryError } from '../../shared/types';
 
-import { Button, Loader, FormField } from '../../components';
+import { Button, Loader, FormField, RolesSelect } from '../../components';
 
 const addNewUserSchema = z.object({
   username: z
@@ -55,13 +52,6 @@ export function NewUserForm() {
     mode: 'all',
   });
 
-  const options = Object.keys(userRoles).map((key) => {
-    return {
-      value: key,
-      label: userRoles[key as keyof typeof userRoles],
-    };
-  });
-
   async function handleAddNewUser(data: AddNewUserInputs) {
     const parsedRoles = data.roles.map((role) => role.value);
 
@@ -98,12 +88,15 @@ export function NewUserForm() {
           id="username"
           placeholder="Jeenie"
           autoComplete="off"
+          aria-invalid={errors.username ? true : false}
           required
           disabled={isSubmitting}
           {...register('username')}
         />
         {errors.username ? (
-          <FormField.Error>{errors.username.message}</FormField.Error>
+          <FormField.Error role="alert">
+            {errors.username.message}
+          </FormField.Error>
         ) : null}
       </FormField.Root>
 
@@ -113,13 +106,16 @@ export function NewUserForm() {
           type="password"
           id="password"
           placeholder="******"
+          aria-invalid={errors.password ? true : false}
           required
           disabled={isSubmitting}
           {...register('password')}
         />
 
         {errors.password ? (
-          <FormField.Error>{errors.password.message}</FormField.Error>
+          <FormField.Error role="alert">
+            {errors.password.message}
+          </FormField.Error>
         ) : null}
       </FormField.Root>
 
@@ -129,23 +125,15 @@ export function NewUserForm() {
           name="roles"
           control={control}
           render={({ field }) => {
+            const { ref, ...rest } = field;
+
             return (
-              <Select
-                inputId="roles"
-                isMulti
-                options={options}
-                placeholder="Selecione..."
-                noOptionsMessage={() => 'Sem opções'}
-                styles={styles}
-                required
-                isDisabled={isSubmitting}
-                {...field}
-              />
+              <RolesSelect innerRef={ref} isDisabled={isSubmitting} {...rest} />
             );
           }}
         />
         {errors.roles ? (
-          <FormField.Error>{errors.roles.message}</FormField.Error>
+          <FormField.Error role="alert">{errors.roles.message}</FormField.Error>
         ) : null}
       </FormField.Root>
 

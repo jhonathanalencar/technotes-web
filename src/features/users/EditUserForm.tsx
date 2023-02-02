@@ -1,55 +1,176 @@
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import * as Checkbox from '@radix-ui/react-checkbox';
+import { Check } from 'phosphor-react';
 
-import { User } from '../../shared/types';
+import { QueryError, Role, User } from '../../shared/types';
+import { userRoles } from '../../shared/data';
+import { useUpdateUserMutation } from './usersApiSlice';
+
+import { Button, FormField, Loader, RolesSelect } from '../../components';
 
 interface EditUserProps {
   user: User;
 }
 
 const updateUserSchema = z.object({
-  username: z.string(),
-  password: z.string(),
-  roles: z.enum(['Employee', 'Manager', 'Admin']).array(),
+  username: z
+    .string({
+      required_error: 'usuário é requirido',
+    })
+    .trim()
+    .min(1, 'usuário é requirido'),
+  password: z.string().nullish(),
+  roles: z
+    .array(
+      z.object({
+        value: z.enum(['Employee', 'Manager', 'Admin']),
+        label: z.string(),
+      }),
+      {
+        required_error: 'usuário precisa ter no mínimo 1 tipo',
+      }
+    )
+    .min(1, 'usuário precisa ter no mínimo 1 tipo'),
   active: z.boolean(),
 });
 
 type UpdateUserInputs = z.infer<typeof updateUserSchema>;
 
+function formatRoles(roles: Role[]) {
+  return roles.map((role) => {
+    return {
+      value: role,
+      label: userRoles[role as keyof typeof userRoles],
+    };
+  });
+}
+
 export function EditUserForm({ user }: EditUserProps) {
-  const { handleSubmit, register } = useForm<UpdateUserInputs>({
+  const [updateUser, { isLoading, isError, error }] = useUpdateUserMutation();
+  const navigate = useNavigate();
+
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { isSubmitting, errors, isValid },
+    reset,
+  } = useForm<UpdateUserInputs>({
     resolver: zodResolver(updateUserSchema),
+    mode: 'all',
     defaultValues: {
       username: user.username,
-      roles: user.roles,
+      roles: formatRoles(user.roles),
       active: user.active,
     },
   });
 
-  const labelStyles = 'text-lg md:text-xl text-gray-200 font-semibold';
-  const inputStyles =
-    'w-full h-12 px-4 text-base md:text-lg font-medium text-gray-300 placeholder:text-gray-400 bg-zinc-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-zinc-800';
-  const errorStyles = 'text-base font-medium text-red-500';
+  async function handleUpdateUser(data: UpdateUserInputs) {
+    try {
+      const parsedRoles = data.roles.map((role) => role.value);
+
+      await updateUser({
+        id: user.id,
+        username: data.username,
+        active: data.active,
+        roles: parsedRoles,
+        password: data.password ? data.password : undefined,
+      }).unwrap();
+
+      reset();
+      navigate('/dashboard/users');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
-    <form className="w-full bg-zinc-800 p-4 rounded shadow">
-      <label htmlFor="username" className={labelStyles}>
-        Usuário
-      </label>
-      <input type="text" id="username" className={inputStyles} />
-      <label htmlFor="password" className={labelStyles}>
-        Senha
-      </label>
-      <input type="password" id="password" className={inputStyles} />
-      <label htmlFor="roles" className={labelStyles}>
-        Tipo de usuário
-      </label>
-      <select id="roles" className={inputStyles} />
-      <label htmlFor="active" className={labelStyles}>
-        Ativo
-      </label>
-      <input type="checkbox" />
+    <form
+      onSubmit={handleSubmit(handleUpdateUser)}
+      className="w-full bg-zinc-800 p-4 rounded shadow"
+    >
+      {isError ? (
+        <p className="text-red-500 font-medium text-base tracking-wide md:text-lg">
+          {(error as QueryError)?.data?.error}
+        </p>
+      ) : null}
+
+      <FormField.Root>
+        <FormField.Label htmlFor="username">Usuário</FormField.Label>
+        <FormField.Input
+          type="text"
+          id="username"
+          placeholder="Jennie"
+          required
+          disabled={isSubmitting}
+          {...register('username')}
+        />
+        {errors.username ? (
+          <FormField.Error>{errors.username.message}</FormField.Error>
+        ) : null}
+      </FormField.Root>
+      <FormField.Root>
+        <FormField.Label htmlFor="password">Senha</FormField.Label>
+        <FormField.Input
+          type="password"
+          id="password"
+          placeholder="******"
+          disabled={isSubmitting}
+          {...register('password')}
+        />
+        {errors.password ? (
+          <FormField.Error>{errors.password.message}</FormField.Error>
+        ) : null}
+      </FormField.Root>
+      <FormField.Root>
+        <FormField.Label htmlFor="roles">Tipo de usuário</FormField.Label>
+        <Controller
+          control={control}
+          name="roles"
+          render={({ field }) => {
+            const { ref, ...rest } = field;
+
+            return (
+              <RolesSelect innerRef={ref} isDisabled={isSubmitting} {...rest} />
+            );
+          }}
+        />
+        {errors.roles ? (
+          <FormField.Error>{errors.roles.message}</FormField.Error>
+        ) : null}
+      </FormField.Root>
+      <FormField.Root>
+        <div className="flex items-center gap-2">
+          <FormField.Label>Ativo</FormField.Label>
+          <Controller
+            control={control}
+            name="active"
+            render={({ field }) => {
+              const { value, onChange, ...rest } = field;
+
+              return (
+                <Checkbox.Root
+                  className="h-8 w-8 bg-zinc-900 flex items-center justify-center rounded focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 focus-within:ring-offset-zinc-800 disabled:opacity-70"
+                  checked={value}
+                  onCheckedChange={onChange}
+                  {...rest}
+                >
+                  <Checkbox.Indicator className="h-6 w-6">
+                    <Check className="h-6 w-6 text-green-500" weight="bold" />
+                  </Checkbox.Indicator>
+                </Checkbox.Root>
+              );
+            }}
+          />
+        </div>
+      </FormField.Root>
+
+      <Button type="submit" disabled={isSubmitting || !isValid}>
+        {isLoading ? <Loader isSmall /> : 'Salvar'}
+      </Button>
     </form>
   );
 }

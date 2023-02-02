@@ -35,7 +35,7 @@ export const styles: StylesConfig = {
   placeholder: (base) => ({
     ...base,
     color: colors.zinc[300],
-    position: 'fixed',
+    position: 'relative',
   }),
   multiValue: (base) => ({
     ...base,

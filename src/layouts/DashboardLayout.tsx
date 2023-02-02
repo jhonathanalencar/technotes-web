@@ -11,7 +11,7 @@ export function DashboardLayout() {
           techNotes
         </Link>
       </header>
-      <main className="flex-1">
+      <main className="h-full overflow-auto hide-scrollbar">
         <Outlet />
       </main>
       <footer className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-6 border-t-2 border-gray-500 py-4 md:py-6">

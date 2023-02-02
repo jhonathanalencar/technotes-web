@@ -14,7 +14,7 @@ export function GoBackHeader({ children }: GoBackHeaderProps) {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 sticky top-0 z-10 backdrop-blur-sm">
       <button
         type="button"
         onClick={handleGoBack}
