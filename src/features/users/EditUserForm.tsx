@@ -18,11 +18,15 @@ interface EditUserProps {
 const updateUserSchema = z.object({
   username: z
     .string({
-      required_error: 'usuário é requirido',
+      required_error: 'nome é requirido',
     })
     .trim()
-    .min(1, 'usuário é requirido'),
-  password: z.string().nullish(),
+    .min(1, 'nome é requirido'),
+  password: z
+    .string()
+    .min(6, 'senha precisa ter no mínimo 6 dígitos')
+    .optional()
+    .or(z.literal('')),
   roles: z
     .array(
       z.object({
@@ -64,6 +68,7 @@ export function EditUserForm({ user }: EditUserProps) {
     defaultValues: {
       username: user.username,
       roles: formatRoles(user.roles),
+      password: undefined,
       active: user.active,
     },
   });
@@ -99,7 +104,7 @@ export function EditUserForm({ user }: EditUserProps) {
       ) : null}
 
       <FormField.Root>
-        <FormField.Label htmlFor="username">Usuário</FormField.Label>
+        <FormField.Label htmlFor="username">Nome de usuário</FormField.Label>
         <FormField.Input
           type="text"
           id="username"
@@ -112,6 +117,7 @@ export function EditUserForm({ user }: EditUserProps) {
           <FormField.Error>{errors.username.message}</FormField.Error>
         ) : null}
       </FormField.Root>
+
       <FormField.Root>
         <FormField.Label htmlFor="password">Senha</FormField.Label>
         <FormField.Input
@@ -125,6 +131,7 @@ export function EditUserForm({ user }: EditUserProps) {
           <FormField.Error>{errors.password.message}</FormField.Error>
         ) : null}
       </FormField.Root>
+
       <FormField.Root>
         <FormField.Label htmlFor="roles">Tipo de usuário</FormField.Label>
         <Controller
@@ -142,6 +149,7 @@ export function EditUserForm({ user }: EditUserProps) {
           <FormField.Error>{errors.roles.message}</FormField.Error>
         ) : null}
       </FormField.Root>
+
       <FormField.Root>
         <div className="flex items-center gap-2">
           <FormField.Label>Ativo</FormField.Label>
