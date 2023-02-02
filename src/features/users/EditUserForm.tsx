@@ -7,7 +7,7 @@ import { Check } from 'phosphor-react';
 
 import { QueryError, Role, User } from '../../shared/types';
 import { userRoles } from '../../shared/data';
-import { useUpdateUserMutation } from './usersApiSlice';
+import { useDeleteUserMutation, useUpdateUserMutation } from './usersApiSlice';
 
 import { Button, FormField, Loader, RolesSelect } from '../../components';
 
@@ -54,6 +54,10 @@ function formatRoles(roles: Role[]) {
 
 export function EditUserForm({ user }: EditUserProps) {
   const [updateUser, { isLoading, isError, error }] = useUpdateUserMutation();
+  const [
+    deleteUser,
+    { isLoading: delIsLoading, isError: delIsError, error: delError },
+  ] = useDeleteUserMutation();
   const navigate = useNavigate();
 
   const {
@@ -92,15 +96,33 @@ export function EditUserForm({ user }: EditUserProps) {
     }
   }
 
+  async function handleDeleteUser() {
+    try {
+      await deleteUser({
+        id: user.id,
+      }).unwrap();
+
+      navigate('/dashboard/users');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <form
       onSubmit={handleSubmit(handleUpdateUser)}
       className="w-full bg-zinc-800 p-4 rounded shadow"
     >
-      {isError ? (
-        <p className="text-red-500 font-medium text-base tracking-wide md:text-lg">
-          {(error as QueryError)?.data?.error}
-        </p>
+      {isError || delIsError ? (
+        isError ? (
+          <p className="text-red-500 font-medium text-base tracking-wide md:text-lg">
+            {(error as QueryError)?.data?.error}
+          </p>
+        ) : (
+          <p className="text-red-500 font-medium text-base tracking-wide md:text-lg">
+            {(delError as QueryError)?.data?.error}
+          </p>
+        )
       ) : null}
 
       <FormField.Root>
@@ -176,9 +198,14 @@ export function EditUserForm({ user }: EditUserProps) {
         </div>
       </FormField.Root>
 
-      <Button type="submit" disabled={isSubmitting || !isValid}>
-        {isLoading ? <Loader isSmall /> : 'Salvar'}
-      </Button>
+      <div className="flex gap-4 mt-8">
+        <Button type="submit" disabled={isSubmitting || !isValid}>
+          {isLoading ? <Loader isSmall /> : 'Salvar'}
+        </Button>
+        <Button variant="red" onClick={handleDeleteUser}>
+          {delIsLoading ? <Loader isSmall /> : 'Deletar'}
+        </Button>
+      </div>
     </form>
   );
 }
