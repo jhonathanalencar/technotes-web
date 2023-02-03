@@ -1,3 +1,4 @@
+import { Slot } from '@radix-ui/react-slot';
 import {
   forwardRef,
   HTMLAttributes,
@@ -30,12 +31,16 @@ function FormFieldLabel({ children, ...rest }: FormFieldLabelProps) {
   );
 }
 
-type FormFieldInputProps = InputHTMLAttributes<HTMLInputElement>;
+interface FormFieldInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  asChild?: boolean;
+}
 
 const FormFieldInput = forwardRef<HTMLInputElement, FormFieldInputProps>(
-  (props, ref) => {
+  ({ asChild, ...props }, ref) => {
+    const Comp = asChild ? Slot : 'input';
+
     return (
-      <input
+      <Comp
         className="w-full h-12 px-4 text-base md:text-lg font-medium text-gray-300 placeholder:text-gray-400 bg-zinc-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-zinc-800"
         ref={ref}
         {...props}

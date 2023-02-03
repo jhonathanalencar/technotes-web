@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { Login, Welcome } from './features/auth';
 import { Prefetch } from './features/auth/Prefetch';
-import { NotesList } from './features/notes';
+import { NewNote, NotesList } from './features/notes';
 import { EditUser, NewUser, UsersList } from './features/users';
 import { DashboardLayout, DefaultLayout } from './layouts';
 import { NotFound, Public } from './pages';
@@ -50,7 +50,16 @@ const router = createBrowserRouter([
               },
               {
                 path: 'notes',
-                element: <NotesList />,
+                children: [
+                  {
+                    index: true,
+                    element: <NotesList />,
+                  },
+                  {
+                    path: 'new',
+                    element: <NewNote />,
+                  },
+                ],
               },
             ],
           },

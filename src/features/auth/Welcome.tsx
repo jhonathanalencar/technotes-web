@@ -18,6 +18,10 @@ export function Welcome() {
           Ver notas técnicas
         </DashboardLink>
 
+        <DashboardLink linkTo="/dashboard/notes/new">
+          Adicionar nova nota
+        </DashboardLink>
+
         <DashboardLink linkTo="/dashboard/users">
           Ver Configurações de Usuários
         </DashboardLink>
