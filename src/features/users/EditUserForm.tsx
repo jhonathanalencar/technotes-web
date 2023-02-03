@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -59,11 +60,18 @@ function formatRoles(roles: Role[]) {
 }
 
 export function EditUserForm({ user }: EditUserProps) {
-  const [updateUser, { isLoading, isError, error }] = useUpdateUserMutation();
+  const [updateUser, { isLoading, isSuccess, isError, error }] =
+    useUpdateUserMutation();
   const [
     deleteUser,
-    { isLoading: delIsLoading, isError: delIsError, error: delError },
+    {
+      isLoading: isDelLoading,
+      isSuccess: isDelSuccess,
+      isError: isDelError,
+      error: delError,
+    },
   ] = useDeleteUserMutation();
+
   const navigate = useNavigate();
 
   const {
@@ -83,6 +91,13 @@ export function EditUserForm({ user }: EditUserProps) {
     },
   });
 
+  useEffect(() => {
+    if (isSuccess || isDelSuccess) {
+      reset();
+      navigate('/dashboard/users');
+    }
+  }, [isSuccess, isDelSuccess, reset, navigate]);
+
   async function handleUpdateUser(data: UpdateUserInputs) {
     try {
       const parsedRoles = data.roles.map((role) => role.value);
@@ -94,9 +109,6 @@ export function EditUserForm({ user }: EditUserProps) {
         roles: parsedRoles,
         password: data.password ? data.password : undefined,
       }).unwrap();
-
-      reset();
-      navigate('/dashboard/users');
     } catch (error) {
       console.log(error);
     }
@@ -107,8 +119,6 @@ export function EditUserForm({ user }: EditUserProps) {
       await deleteUser({
         id: user.id,
       }).unwrap();
-
-      navigate('/dashboard/users');
     } catch (error) {
       console.log(error);
     }
@@ -119,12 +129,10 @@ export function EditUserForm({ user }: EditUserProps) {
       onSubmit={handleSubmit(handleUpdateUser)}
       className="w-full bg-zinc-800 p-4 rounded shadow"
     >
-      {isError || delIsError ? (
-        isError ? (
-          <ResponseError>{(error as QueryError)?.data?.error}</ResponseError>
-        ) : (
-          <ResponseError>{(delError as QueryError)?.data?.error}</ResponseError>
-        )
+      {isError ? (
+        <ResponseError>{(error as QueryError)?.data?.error}</ResponseError>
+      ) : isDelError ? (
+        <ResponseError>{(delError as QueryError)?.data?.error}</ResponseError>
       ) : null}
 
       <FormField.Root>
@@ -219,8 +227,8 @@ export function EditUserForm({ user }: EditUserProps) {
         <Button type="submit" disabled={isSubmitting || !isValid}>
           {isLoading ? <Loader isSmall /> : 'Salvar'}
         </Button>
-        <Button onClick={handleDeleteUser} disabled={delIsLoading}>
-          {delIsLoading ? <Loader isSmall /> : 'Deletar'}
+        <Button onClick={handleDeleteUser} disabled={isDelLoading}>
+          {isDelLoading ? <Loader isSmall /> : 'Deletar'}
         </Button>
       </div>
     </form>

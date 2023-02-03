@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -14,7 +15,6 @@ import {
   ResponseError,
   SelectInput,
 } from '../../components';
-import { useEffect } from 'react';
 
 interface EditNoteFormProps {
   note: Note;
@@ -212,7 +212,7 @@ export function EditNoteForm({ note, users }: EditNoteFormProps) {
         <Button
           type="button"
           onClick={handleDeleteNote}
-          disabled={isSubmitting}
+          disabled={isDelLoading}
         >
           {isDelLoading ? <Loader isSmall /> : 'Deletar'}
         </Button>
