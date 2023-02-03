@@ -8,6 +8,7 @@ import { GoBackHeader, Loader } from '../../components';
 import { EntityId } from '@reduxjs/toolkit';
 import { EditNoteForm } from './EditNoteForm';
 import { DateTimeInfo } from '../../components';
+import { selectAllUsers } from '../users/usersApiSlice';
 
 export function EditNote() {
   const { id } = useParams();
@@ -15,20 +16,24 @@ export function EditNote() {
   const note = useSelector((state: RootState) =>
     selectNoteById(state, id as EntityId)
   );
+  const users = useSelector((state: RootState) => selectAllUsers(state));
 
-  const content = note ? (
-    <section className="w-full h-full mt-4">
-      <GoBackHeader>Editar Nota #{note.ticket}</GoBackHeader>
+  const content =
+    note && users ? (
+      <section className="w-full h-full pt-4">
+        <GoBackHeader path="/dashboard/users">
+          Editar Nota #{note.ticket}
+        </GoBackHeader>
 
-      <DateTimeInfo createdAt={note.createdAt} updatedAt={note.updatedAt} />
+        <DateTimeInfo createdAt={note.createdAt} updatedAt={note.updatedAt} />
 
-      <div className="w-full max-w-3xl mx-auto mt-8">
-        <EditNoteForm />
-      </div>
-    </section>
-  ) : (
-    <Loader />
-  );
+        <div className="w-full max-w-3xl mx-auto mt-8 pb-16">
+          <EditNoteForm note={note} users={users} />
+        </div>
+      </section>
+    ) : (
+      <Loader />
+    );
 
   return content;
 }

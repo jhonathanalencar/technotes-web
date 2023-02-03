@@ -46,7 +46,7 @@ export function UsersList() {
 
     content = (
       <section className="my-6">
-        <GoBackHeader>Usuários</GoBackHeader>
+        <GoBackHeader path="/dashboard">Usuários</GoBackHeader>
 
         <table className="w-full max-w-5xl mx-auto mt-8 text-left border-collapse rounded overflow-hidden shadow-sm">
           <thead className="bg-teal-700 text-zinc-100 border-b-2 border-zinc-800 hidden md:table-header-group">

@@ -19,6 +19,7 @@ type CreateNoteData = {
 };
 type UpdateNoteData = {
   id: string;
+  userId: string;
   title: string;
   text: string;
   completed: boolean;
@@ -44,7 +45,6 @@ export const notesApiSlice = apiSlice.injectEndpoints({
           return response.status === 200 && !result.error;
         },
       }),
-      keepUnusedDataFor: 5,
       transformResponse: (response: GetNotesResponse) => {
         const loadedNotes = response.map((note) => {
           return {

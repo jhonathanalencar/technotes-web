@@ -16,8 +16,8 @@ export function EditUser() {
   );
 
   const content = user ? (
-    <section className="h-full w-full mt-4">
-      <GoBackHeader>Editar Usuário</GoBackHeader>
+    <section className="h-full w-full pt-4">
+      <GoBackHeader path="/dashboard/users">Editar Usuário</GoBackHeader>
 
       <DateTimeInfo createdAt={user.createdAt} updatedAt={user.updatedAt} />
 

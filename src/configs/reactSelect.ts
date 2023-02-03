@@ -2,8 +2,8 @@ import { StylesConfig } from 'react-select';
 import colors from 'tailwindcss/colors';
 
 export const styles: StylesConfig = {
-  control: (base) => ({
-    ...base,
+  control: (styles) => ({
+    ...styles,
     backgroundColor: colors.zinc[900],
     borderColor: colors.zinc[700],
     ':focus-within': {
@@ -14,36 +14,61 @@ export const styles: StylesConfig = {
       borderColor: colors.blue[600],
     },
   }),
-  menu: (base) => ({
-    ...base,
+  menu: (styles) => ({
+    ...styles,
     backgroundColor: colors.zinc[900],
   }),
-  input: (base) => ({
-    ...base,
+  menuList: (styles) => ({
+    ...styles,
+    maxHeight: '7.5rem',
+
+    '::-webkit-scrollbar': {
+      width: '0.25rem',
+      height: '0',
+    },
+    '::-webkit-scrollbar-track': {
+      background: colors.zinc[800],
+    },
+    '::-webkit-scrollbar-thumb': {
+      background: colors.blue[600],
+      borderRadius: '0.25rem',
+    },
+    '::-webkit-scrollbar-thumb:hover': {
+      background: colors.blue[700],
+    },
+  }),
+  input: (styles) => ({
+    ...styles,
     height: '3rem',
     backgroundColor: colors.zinc[900],
     color: colors.zinc[300],
   }),
-  option: (base, { isFocused }) => ({
-    ...base,
+  option: (styles, { isFocused }) => ({
+    ...styles,
     backgroundColor: isFocused ? colors.zinc[700] : colors.zinc[900],
     color: colors.zinc[400],
     ':hover': {
       backgroundColor: colors.zinc[700],
     },
+    height: '40px',
   }),
-  placeholder: (base) => ({
-    ...base,
+  placeholder: (styles) => ({
+    ...styles,
     color: colors.zinc[300],
     position: 'relative',
   }),
-  multiValue: (base) => ({
-    ...base,
+  singleValue: (styles) => ({
+    ...styles,
+    position: 'relative',
+    color: colors.zinc[200],
+  }),
+  multiValue: (styles) => ({
+    ...styles,
     backgroundColor: colors.zinc[900],
     color: colors.zinc[200],
   }),
-  multiValueLabel: (base) => ({
-    ...base,
+  multiValueLabel: (styles) => ({
+    ...styles,
     backgroundColor: colors.zinc[700],
     color: colors.zinc[300],
   }),

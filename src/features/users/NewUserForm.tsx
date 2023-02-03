@@ -6,7 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateUserMutation } from './usersApiSlice';
 import { QueryError } from '../../shared/types';
 
-import { Button, Loader, FormField, RolesSelect } from '../../components';
+import {
+  Button,
+  Loader,
+  FormField,
+  SelectInput,
+  ResponseError,
+} from '../../components';
+import { rolesSelectOptions } from '../../shared/data';
 
 const addNewUserSchema = z.object({
   username: z
@@ -76,9 +83,7 @@ export function NewUserForm() {
       className="w-full bg-zinc-800 p-4 rounded shadow"
     >
       {isError ? (
-        <p className="text-red-500 font-medium text-base tracking-wide md:text-lg">
-          {(error as QueryError)?.data?.error}
-        </p>
+        <ResponseError>{(error as QueryError)?.data?.error}</ResponseError>
       ) : null}
 
       <FormField.Root>
@@ -128,7 +133,14 @@ export function NewUserForm() {
             const { ref, ...rest } = field;
 
             return (
-              <RolesSelect innerRef={ref} isDisabled={isSubmitting} {...rest} />
+              <SelectInput
+                innerRef={ref}
+                inputId="roles"
+                isMulti
+                options={rolesSelectOptions}
+                isDisabled={isSubmitting}
+                {...rest}
+              />
             );
           }}
         />

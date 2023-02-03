@@ -12,7 +12,11 @@ export function NotesList() {
     isSuccess,
     isError,
     error,
-  } = useGetNotesQuery();
+  } = useGetNotesQuery(undefined, {
+    pollingInterval: 60000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   let content: ReactNode;
 
@@ -43,7 +47,7 @@ export function NotesList() {
 
     content = (
       <section className="mt-4">
-        <GoBackHeader>Notas</GoBackHeader>
+        <GoBackHeader path="/dashboard">Notas</GoBackHeader>
 
         <table className="w-full max-w-6xl mx-auto mt-8 text-left border-collapse rounded overflow-hidden shadow-sm">
           <thead className="bg-teal-700 text-zinc-100 border-b-2 border-zinc-800">

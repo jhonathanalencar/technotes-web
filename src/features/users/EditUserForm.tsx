@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { QueryError, Role, User } from '../../shared/types';
-import { userRoles } from '../../shared/data';
+import { rolesSelectOptions, userRoles } from '../../shared/data';
 import { useDeleteUserMutation, useUpdateUserMutation } from './usersApiSlice';
 
 import {
@@ -12,7 +12,8 @@ import {
   Checkbox,
   FormField,
   Loader,
-  RolesSelect,
+  SelectInput,
+  ResponseError,
 } from '../../components';
 
 interface EditUserProps {
@@ -120,13 +121,9 @@ export function EditUserForm({ user }: EditUserProps) {
     >
       {isError || delIsError ? (
         isError ? (
-          <p className="text-red-500 font-medium text-base tracking-wide md:text-lg">
-            {(error as QueryError)?.data?.error}
-          </p>
+          <ResponseError>{(error as QueryError)?.data?.error}</ResponseError>
         ) : (
-          <p className="text-red-500 font-medium text-base tracking-wide md:text-lg">
-            {(delError as QueryError)?.data?.error}
-          </p>
+          <ResponseError>{(delError as QueryError)?.data?.error}</ResponseError>
         )
       ) : null}
 
@@ -136,12 +133,15 @@ export function EditUserForm({ user }: EditUserProps) {
           type="text"
           id="username"
           placeholder="Jennie"
+          aria-invalid={errors.username ? true : false}
           required
           disabled={isSubmitting}
           {...register('username')}
         />
         {errors.username ? (
-          <FormField.Error>{errors.username.message}</FormField.Error>
+          <FormField.Error role="alert">
+            {errors.username.message}
+          </FormField.Error>
         ) : null}
       </FormField.Root>
 
@@ -151,11 +151,14 @@ export function EditUserForm({ user }: EditUserProps) {
           type="password"
           id="password"
           placeholder="******"
+          aria-invalid={errors.password ? true : false}
           disabled={isSubmitting}
           {...register('password')}
         />
         {errors.password ? (
-          <FormField.Error>{errors.password.message}</FormField.Error>
+          <FormField.Error role="alert">
+            {errors.password.message}
+          </FormField.Error>
         ) : null}
       </FormField.Root>
 
@@ -168,18 +171,26 @@ export function EditUserForm({ user }: EditUserProps) {
             const { ref, ...rest } = field;
 
             return (
-              <RolesSelect innerRef={ref} isDisabled={isSubmitting} {...rest} />
+              <SelectInput
+                innerRef={ref}
+                inputId="roles"
+                isMulti
+                options={rolesSelectOptions}
+                aria-invalid={errors.roles ? true : false}
+                isDisabled={isSubmitting}
+                {...rest}
+              />
             );
           }}
         />
         {errors.roles ? (
-          <FormField.Error>{errors.roles.message}</FormField.Error>
+          <FormField.Error role="alert">{errors.roles.message}</FormField.Error>
         ) : null}
       </FormField.Root>
 
       <FormField.Root>
         <div className="flex items-center gap-2">
-          <FormField.Label>Ativo</FormField.Label>
+          <FormField.Label htmlFor="active">Ativo</FormField.Label>
           <Controller
             control={control}
             name="active"
@@ -188,6 +199,7 @@ export function EditUserForm({ user }: EditUserProps) {
 
               return (
                 <Checkbox
+                  id="active"
                   checked={value}
                   onCheckedChange={onChange}
                   {...rest}
@@ -195,8 +207,14 @@ export function EditUserForm({ user }: EditUserProps) {
               );
             }}
           />
+          {errors.active ? (
+            <FormField.Error role="alert">
+              {errors.active.message}
+            </FormField.Error>
+          ) : null}
         </div>
       </FormField.Root>
+
       <div className="flex gap-4 mt-8">
         <Button type="submit" disabled={isSubmitting || !isValid}>
           {isLoading ? <Loader isSmall /> : 'Salvar'}

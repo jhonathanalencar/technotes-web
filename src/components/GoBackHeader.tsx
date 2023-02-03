@@ -3,14 +3,15 @@ import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface GoBackHeaderProps {
+  path: string;
   children: ReactNode;
 }
 
-export function GoBackHeader({ children }: GoBackHeaderProps) {
+export function GoBackHeader({ children, path }: GoBackHeaderProps) {
   const navigate = useNavigate();
 
   function handleGoBack() {
-    navigate(-1);
+    navigate(path);
   }
 
   return (

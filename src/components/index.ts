@@ -4,6 +4,7 @@ export { DashboardLink } from './DashboardLink';
 export { GoBackHeader } from './GoBackHeader';
 export { Button } from './Button';
 export { FormField } from './FormField';
-export { RolesSelect } from './RolesSelect';
+export { SelectInput } from './SelectInput';
 export { Checkbox } from './Checkbox';
 export { DateTimeInfo } from './DateTimeInfo';
+export { ResponseError } from './ResponseError';

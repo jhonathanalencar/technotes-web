@@ -3,3 +3,10 @@ export const userRoles = {
   Manager: 'Gerente',
   Admin: 'Administrador',
 };
+
+export const rolesSelectOptions = Object.keys(userRoles).map((key) => {
+  return {
+    value: key,
+    label: userRoles[key as keyof typeof userRoles],
+  };
+});
