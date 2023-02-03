@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { Login, Welcome } from './features/auth';
 import { Prefetch } from './features/auth/Prefetch';
-import { NewNote, NotesList } from './features/notes';
+import { EditNote, NewNote, NotesList } from './features/notes';
 import { EditUser, NewUser, UsersList } from './features/users';
 import { DashboardLayout, DefaultLayout } from './layouts';
 import { NotFound, Public } from './pages';
@@ -54,6 +54,10 @@ const router = createBrowserRouter([
                   {
                     index: true,
                     element: <NotesList />,
+                  },
+                  {
+                    path: ':id',
+                    element: <EditNote />,
                   },
                   {
                     path: 'new',
