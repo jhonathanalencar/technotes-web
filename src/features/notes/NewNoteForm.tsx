@@ -1,12 +1,18 @@
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useCreateNoteMutation } from './notesApiSlice';
-import { QueryError } from '../../shared/types';
+import { QueryError, User } from '../../shared/types';
 
-import { Button, FormField, Loader } from '../../components';
+import {
+  Button,
+  FormField,
+  Loader,
+  ResponseError,
+  SelectInput,
+} from '../../components';
 
 const createNewNoteSchema = z.object({
   title: z
@@ -21,17 +27,31 @@ const createNewNoteSchema = z.object({
     })
     .trim()
     .min(1, 'texto é requirido'),
+  userId: z.object(
+    {
+      value: z.string(),
+      label: z.string(),
+    },
+    {
+      required_error: 'selecione um usuário',
+    }
+  ),
 });
 
 type CreateNewNoteInputs = z.infer<typeof createNewNoteSchema>;
 
-export function NewNoteForm() {
+interface NewNoteFormProps {
+  users: User[];
+}
+
+export function NewNoteForm({ users }: NewNoteFormProps) {
   const [createNewNote, { isLoading, isError, error }] =
     useCreateNoteMutation();
   const navigate = useNavigate();
 
   const {
     handleSubmit,
+    control,
     register,
     formState: { isSubmitting, errors, isValid },
     reset,
@@ -45,7 +65,7 @@ export function NewNoteForm() {
       await createNewNote({
         title: data.title,
         text: data.text,
-        userId: '7ac72783-bfd0-4326-9204-d4f5acb91ff7',
+        userId: data.userId.value,
       }).unwrap();
 
       reset();
@@ -55,15 +75,20 @@ export function NewNoteForm() {
     }
   }
 
+  const options = users.map((user) => {
+    return {
+      value: user.id,
+      label: user.username,
+    };
+  });
+
   return (
     <form
       onSubmit={handleSubmit(handleCreateNewNote)}
       className="w-full bg-zinc-800 rounded shadow p-4"
     >
       {isError ? (
-        <p className="text-red-500 font-medium text-base tracking-wide md:text-lg">
-          {(error as QueryError)?.data?.error}
-        </p>
+        <ResponseError>{(error as QueryError)?.data?.error}</ResponseError>
       ) : null}
 
       <FormField.Root>
@@ -72,12 +97,13 @@ export function NewNoteForm() {
           type="text"
           id="title"
           placeholder="Título da nota"
+          aria-invalid={errors.title ? true : false}
           required
           disabled={isSubmitting}
           {...register('title')}
         />
         {errors.title ? (
-          <FormField.Error>{errors.title.message}</FormField.Error>
+          <FormField.Error role="alert">{errors.title.message}</FormField.Error>
         ) : null}
       </FormField.Root>
 
@@ -86,15 +112,42 @@ export function NewNoteForm() {
         <FormField.Input asChild>
           <textarea
             id="text"
+            className="h-28 min-h-[112px] max-h-40 resize-y pt-2"
             placeholder="Texto da nota"
+            aria-invalid={errors.text ? true : false}
             required
             disabled={isSubmitting}
-            className="h-28 min-h-[112px] max-h-40 resize-y pt-2"
             {...register('text')}
           />
         </FormField.Input>
         {errors.text ? (
-          <FormField.Error>{errors.text.message}</FormField.Error>
+          <FormField.Error role="alert">{errors.text.message}</FormField.Error>
+        ) : null}
+      </FormField.Root>
+
+      <FormField.Root>
+        <FormField.Label htmlFor="owner">Atribuída a</FormField.Label>
+        <Controller
+          control={control}
+          name="userId"
+          render={({ field }) => {
+            const { ref, ...rest } = field;
+            return (
+              <SelectInput
+                innerRef={ref}
+                inputId="owner"
+                aria-invalid={errors.userId ? true : false}
+                options={options}
+                isDisabled={isSubmitting}
+                {...rest}
+              />
+            );
+          }}
+        />
+        {errors.userId ? (
+          <FormField.Error role="alert">
+            {errors.userId.message}
+          </FormField.Error>
         ) : null}
       </FormField.Root>
 
