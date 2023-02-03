@@ -16,7 +16,7 @@ export function EditNote() {
 
   const content = note ? (
     <section className="w-full h-full mt-4">
-      <GoBackHeader>Editar Nota </GoBackHeader>
+      <GoBackHeader>Editar Nota #{note.ticket}</GoBackHeader>
     </section>
   ) : (
     <Loader />

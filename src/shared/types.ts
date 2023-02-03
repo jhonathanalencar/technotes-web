@@ -12,6 +12,7 @@ export type User = {
 export type Note = {
   id: string;
   userId: string;
+  ticket: number;
   title: string;
   text: string;
   completed: boolean;

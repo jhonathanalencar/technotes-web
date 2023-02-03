@@ -50,6 +50,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
           return {
             id: note._id,
             userId: note.userId,
+            ticket: note.ticket,
             title: note.title,
             text: note.text,
             completed: note.completed,
