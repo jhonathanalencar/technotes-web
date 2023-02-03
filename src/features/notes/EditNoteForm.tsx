@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Note, QueryError, User } from '../../shared/types';
-import { useUpdateNoteMutation } from './notesApiSlice';
+import { useDeleteNoteMutation, useUpdateNoteMutation } from './notesApiSlice';
 
 import {
   Button,
@@ -14,6 +14,7 @@ import {
   ResponseError,
   SelectInput,
 } from '../../components';
+import { useEffect } from 'react';
 
 interface EditNoteFormProps {
   note: Note;
@@ -33,7 +34,18 @@ const editNoteSchema = z.object({
 type EditNoteInputs = z.infer<typeof editNoteSchema>;
 
 export function EditNoteForm({ note, users }: EditNoteFormProps) {
-  const [updateNote, { isLoading, isError, error }] = useUpdateNoteMutation();
+  const [updateNote, { isLoading, isSuccess, isError, error }] =
+    useUpdateNoteMutation();
+  const [
+    deleteNote,
+    {
+      isLoading: isDelLoading,
+      isSuccess: isDelSuccess,
+      isError: isDelError,
+      error: delError,
+    },
+  ] = useDeleteNoteMutation();
+
   const navigate = useNavigate();
 
   const {
@@ -55,6 +67,13 @@ export function EditNoteForm({ note, users }: EditNoteFormProps) {
     },
   });
 
+  useEffect(() => {
+    if (isSuccess || isDelSuccess) {
+      reset();
+      navigate('/dashboard/notes');
+    }
+  }, [isSuccess, isDelSuccess, reset, navigate]);
+
   const options = users.map((user) => {
     return {
       value: user.id,
@@ -71,13 +90,19 @@ export function EditNoteForm({ note, users }: EditNoteFormProps) {
         text: data.text,
         completed: data.completed,
       }).unwrap();
-
-      reset();
-      navigate('/dashboard/notes');
     } catch (error) {
       console.log(error);
     }
-    console.log(data);
+  }
+
+  async function handleDeleteNote() {
+    try {
+      await deleteNote({
+        id: note.id,
+      }).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -87,6 +112,8 @@ export function EditNoteForm({ note, users }: EditNoteFormProps) {
     >
       {isError ? (
         <ResponseError>{(error as QueryError)?.data?.error}</ResponseError>
+      ) : isDelError ? (
+        <ResponseError>{(delError as QueryError)?.data?.error}</ResponseError>
       ) : null}
 
       <FormField.Root>
@@ -182,8 +209,12 @@ export function EditNoteForm({ note, users }: EditNoteFormProps) {
         <Button type="submit" disabled={isSubmitting || !isValid}>
           {isLoading ? <Loader isSmall /> : 'Salvar'}
         </Button>
-        <Button type="button" disabled={isSubmitting}>
-          Deletar
+        <Button
+          type="button"
+          onClick={handleDeleteNote}
+          disabled={isSubmitting}
+        >
+          {isDelLoading ? <Loader isSmall /> : 'Deletar'}
         </Button>
       </div>
     </form>
