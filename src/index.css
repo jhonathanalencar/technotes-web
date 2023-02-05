@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.focus-highlight {
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ring-offset-zinc-900;
+}
+
 .line-wrap {
   display: -webkit-box;
   -webkit-line-clamp: 2;
