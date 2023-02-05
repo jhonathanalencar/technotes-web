@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 function usePersist() {
   const [persist, setPersist] = useState(() => {
-    const storedJSON = localStorage.getItem('persist');
+    const storedJSON = localStorage.getItem('@techNotes:0.0.1:persist');
 
     if (storedJSON) {
       return JSON.parse(storedJSON) as boolean;
@@ -15,7 +15,7 @@ function usePersist() {
     localStorage.setItem('@techNotes:0.0.1:persist', JSON.stringify(persist));
   }, [persist]);
 
-  return [persist, setPersist];
+  return { persist, setPersist };
 }
 
 export { usePersist };

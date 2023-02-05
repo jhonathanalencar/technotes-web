@@ -1,15 +1,22 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { useLoginMutation } from './authApiSlice';
 import { QueryError } from '../../shared/types';
 import { setCredentials } from './authSlice';
+import { usePersist } from '../../hooks/usePersist';
 
-import { Button, FormField, Loader, ResponseError } from '../../components';
+import {
+  Button,
+  Checkbox,
+  FormField,
+  Loader,
+  ResponseError,
+} from '../../components';
 
 const loginFormSchema = z.object({
   username: z
@@ -24,6 +31,7 @@ const loginFormSchema = z.object({
     })
     .trim()
     .min(1, 'Senha é requirida'),
+  persist: z.boolean().optional(),
 });
 
 type LoginFormInputs = z.infer<typeof loginFormSchema>;
@@ -31,18 +39,29 @@ type LoginFormInputs = z.infer<typeof loginFormSchema>;
 export function LoginForm() {
   const [login, { isLoading, isError }] = useLoginMutation();
   const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { persist, setPersist } = usePersist();
+
   const {
     handleSubmit,
+    control,
     register,
     formState: { errors, isSubmitting, isValid },
     reset,
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginFormSchema),
     mode: 'all',
+    defaultValues: {
+      persist,
+    },
   });
+
+  function handleTogglePersist() {
+    setPersist((prev) => !prev);
+  }
 
   async function handleLogin(data: LoginFormInputs) {
     try {
@@ -110,6 +129,32 @@ export function LoginForm() {
             {errors.password.message}
           </FormField.Error>
         ) : null}
+      </FormField.Root>
+
+      <FormField.Root>
+        <div className="flex items-center gap-2">
+          <Controller
+            control={control}
+            name="persist"
+            render={({ field }) => {
+              const { value, onChange, ...rest } = field;
+
+              return (
+                <Checkbox
+                  id="persist"
+                  checked={value}
+                  onCheckedChange={(event) => {
+                    onChange(event);
+                    handleTogglePersist();
+                  }}
+                  disabled={isSubmitting}
+                  {...rest}
+                />
+              );
+            }}
+          />
+          <FormField.Label htmlFor="persist">Manter login</FormField.Label>
+        </div>
       </FormField.Root>
 
       <Button type="submit" disabled={isSubmitting || !isValid}>
