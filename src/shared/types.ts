@@ -22,6 +22,7 @@ export type Note = {
 };
 
 export type QueryError = {
+  status: number;
   data?: {
     error: string;
   };

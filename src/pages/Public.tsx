@@ -30,7 +30,7 @@ export function Public() {
       <footer className="border-t-2 border-gray-500 py-4 md:py-6">
         <Link
           to="login"
-          className="inline-flex items-center gap-2 text-gray-100 font-semibold text-2xl md:text-3xl hover:text-gray-400 transition-colors duration-200"
+          className="inline-flex items-center gap-2 text-gray-100 font-semibold text-2xl md:text-3xl hover:text-gray-400 focus:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-zinc-900 rounded transition-colors duration-200"
         >
           Login <SignIn className="h-8 w-8 md:h-10 md:w-10" />
         </Link>
