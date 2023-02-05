@@ -2,14 +2,18 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '../../redux/store';
 import { selectAllUsers } from '../users/usersApiSlice';
-
-import { GoBackHeader, Loader } from '../../components';
 import { NewNoteForm } from './NewNoteForm';
+
+import { ErrorMessage, GoBackHeader } from '../../components';
 
 export function NewNote() {
   const users = useSelector((state: RootState) => selectAllUsers(state));
 
-  const content = users ? (
+  if (!(users?.length > 0)) {
+    return <ErrorMessage error="Esta página não está disponível no momento" />;
+  }
+
+  return (
     <section className="h-full w-full pt-4">
       <GoBackHeader path="/dashboard">Adicionar Nota</GoBackHeader>
 
@@ -17,9 +21,5 @@ export function NewNote() {
         <NewNoteForm users={users} />
       </div>
     </section>
-  ) : (
-    <Loader />
   );
-
-  return content;
 }
