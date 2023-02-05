@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { Login, Welcome } from './features/auth';
+import { PersistLogin } from './features/auth/PersistLogin';
 import { Prefetch } from './features/auth/Prefetch';
 import { EditNote, NewNote, NotesList } from './features/notes';
 import { EditUser, NewUser, UsersList } from './features/users';
@@ -21,47 +22,52 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        element: <Prefetch />,
+        element: <PersistLogin />,
         children: [
           {
-            path: 'dashboard',
-            element: <DashboardLayout />,
+            element: <Prefetch />,
             children: [
               {
-                index: true,
-                element: <Welcome />,
-              },
-              {
-                path: 'users',
+                path: 'dashboard',
+                element: <DashboardLayout />,
                 children: [
                   {
                     index: true,
-                    element: <UsersList />,
+                    element: <Welcome />,
                   },
                   {
-                    path: ':id',
-                    element: <EditUser />,
+                    path: 'users',
+                    children: [
+                      {
+                        index: true,
+                        element: <UsersList />,
+                      },
+                      {
+                        path: ':id',
+                        element: <EditUser />,
+                      },
+                      {
+                        path: 'new',
+                        element: <NewUser />,
+                      },
+                    ],
                   },
                   {
-                    path: 'new',
-                    element: <NewUser />,
-                  },
-                ],
-              },
-              {
-                path: 'notes',
-                children: [
-                  {
-                    index: true,
-                    element: <NotesList />,
-                  },
-                  {
-                    path: ':id',
-                    element: <EditNote />,
-                  },
-                  {
-                    path: 'new',
-                    element: <NewNote />,
+                    path: 'notes',
+                    children: [
+                      {
+                        index: true,
+                        element: <NotesList />,
+                      },
+                      {
+                        path: ':id',
+                        element: <EditNote />,
+                      },
+                      {
+                        path: 'new',
+                        element: <NewNote />,
+                      },
+                    ],
                   },
                 ],
               },

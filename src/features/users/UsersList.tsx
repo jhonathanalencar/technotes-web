@@ -19,7 +19,7 @@ export function UsersList() {
     refetchOnMountOrArgChange: true,
   });
 
-  let content: ReactNode;
+  let content: ReactNode = null;
 
   if (isLoading) {
     content = (

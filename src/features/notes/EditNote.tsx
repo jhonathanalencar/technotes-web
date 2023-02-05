@@ -21,7 +21,7 @@ export function EditNote() {
   const content =
     note && users ? (
       <section className="w-full h-full pt-4">
-        <GoBackHeader path="/dashboard/users">
+        <GoBackHeader path="/dashboard/notes">
           Editar Nota #{note.ticket}
         </GoBackHeader>
 
