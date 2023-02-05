@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
-import { ErrorMessage, GoBackHeader, Loader } from '../../components';
 
 import { QueryError } from '../../shared/types';
 import { Note } from './Note';
 import { useGetNotesQuery } from './notesApiSlice';
+
+import { ErrorMessage, GoBackHeader, Loader } from '../../components';
 
 export function NotesList() {
   const {
@@ -70,7 +71,7 @@ export function NotesList() {
         </table>
       </section>
     );
-  } else return null;
+  }
 
   return content;
 }
