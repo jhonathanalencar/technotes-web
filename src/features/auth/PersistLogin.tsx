@@ -57,7 +57,7 @@ export function PersistLogin() {
       <section className="p-4 flex items-start gap-4 flex-col">
         <ResponseError>
           <span className="text-xl md:text-2xl">
-            {(error as QueryError)?.data?.error}Ocorreu um error
+            {(error as QueryError)?.data?.error}
           </span>
         </ResponseError>
         <Link
