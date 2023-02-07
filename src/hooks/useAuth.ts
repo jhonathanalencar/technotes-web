@@ -7,7 +7,7 @@ import { Role } from '../shared/types';
 interface JwtPayload {
   userInfo: {
     username: string;
-    roles: Role;
+    roles: Role[];
   };
 }
 

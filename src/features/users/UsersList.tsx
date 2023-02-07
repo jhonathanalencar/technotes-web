@@ -2,9 +2,9 @@ import { ReactNode } from 'react';
 
 import { useGetUsersQuery } from './usersApiSlice';
 import { QueryError } from '../../shared/types';
+import { User } from './User';
 
 import { Loader, ErrorMessage, GoBackHeader } from '../../components';
-import { User } from './User';
 
 export function UsersList() {
   const {
