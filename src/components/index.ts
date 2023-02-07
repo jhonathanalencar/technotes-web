@@ -10,3 +10,4 @@ export { DateTimeInfo } from './DateTimeInfo';
 export { ResponseError } from './ResponseError';
 export { DashboardHeader } from './DashboardHeader';
 export { DashboardFooter } from './DashboardFooter';
+export { DashboardNavButton } from './DashboardNavButton';
