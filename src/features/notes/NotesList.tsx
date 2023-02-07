@@ -1,12 +1,16 @@
 import { ReactNode } from 'react';
+import { EntityId } from '@reduxjs/toolkit';
 
 import { QueryError } from '../../shared/types';
 import { Note } from './Note';
 import { useGetNotesQuery } from './notesApiSlice';
+import { useAuth } from '../../hooks/useAuth';
 
 import { ErrorMessage, GoBackHeader, Loader } from '../../components';
 
 export function NotesList() {
+  const { username, isAdmin, isManager } = useAuth();
+
   const {
     data: notes,
     isLoading,
@@ -38,10 +42,19 @@ export function NotesList() {
   }
 
   if (isSuccess) {
-    const { ids } = notes;
+    const { ids, entities } = notes;
+
+    let filteredIds: EntityId[] = [];
+    if (isAdmin || isManager) {
+      filteredIds = [...ids];
+    } else {
+      filteredIds = ids.filter(
+        (noteId) => entities[noteId]?.owner === username
+      );
+    }
 
     const tableContent = ids.length
-      ? ids.map((id) => <Note key={id} noteId={id} />)
+      ? filteredIds.map((id) => <Note key={id} noteId={id} />)
       : null;
 
     const thStyles = 'p-2 md:p-4 text-lg font-bold tracking-wide text-left';
