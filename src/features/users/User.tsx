@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { EntityId } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
 import { NotePencil } from 'phosphor-react';
@@ -8,7 +9,7 @@ interface UserProps {
   userId: EntityId;
 }
 
-export function User({ userId }: UserProps) {
+function UserComponent({ userId }: UserProps) {
   const { user } = useGetUsersQuery('usersList', {
     selectFromResult: ({ data }) => ({
       user: data?.entities[userId],
@@ -74,3 +75,5 @@ export function User({ userId }: UserProps) {
     </tr>
   );
 }
+
+export const User = memo(UserComponent);
