@@ -11,7 +11,7 @@ import { QueryError } from '../../shared/types';
 import { RootState } from '../store';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:3500',
+  baseUrl: import.meta.env.VITE_SERVER_URL,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
