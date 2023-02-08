@@ -1,9 +1,7 @@
 import { EntityId } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { RootState } from '../../redux/store';
-import { selectUserById } from './usersApiSlice';
+import { useGetUsersQuery } from './usersApiSlice';
 
 import { GoBackHeader, Loader, DateTimeInfo } from '../../components';
 import { EditUserForm } from './EditUserForm';
@@ -11,9 +9,11 @@ import { EditUserForm } from './EditUserForm';
 export function EditUser() {
   const { id } = useParams();
 
-  const user = useSelector((state: RootState) =>
-    selectUserById(state, id as EntityId)
-  );
+  const { user } = useGetUsersQuery('usersList', {
+    selectFromResult: ({ data }) => ({
+      user: data?.entities[id as EntityId],
+    }),
+  });
 
   const content = user ? (
     <section className="h-full w-full pt-4">

@@ -1,15 +1,19 @@
-import { useSelector } from 'react-redux';
-
-import { RootState } from '../../redux/store';
-import { selectAllUsers } from '../users/usersApiSlice';
+import { useGetUsersQuery } from '../users/usersApiSlice';
 import { NewNoteForm } from './NewNoteForm';
 
 import { ErrorMessage, GoBackHeader } from '../../components';
+import { User } from '../../shared/types';
 
 export function NewNote() {
-  const users = useSelector((state: RootState) => selectAllUsers(state));
+  const { users } = useGetUsersQuery('usersList', {
+    selectFromResult: ({ data }) => ({
+      users: data?.ids
+        .map((id) => data.entities[id])
+        .filter((user): user is User => !!user),
+    }),
+  });
 
-  if (!(users?.length > 0)) {
+  if (!users || !users?.length) {
     return <ErrorMessage error="Esta página não está disponível no momento" />;
   }
 
