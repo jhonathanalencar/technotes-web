@@ -31,7 +31,7 @@ const initialState = usersAdapter.getInitialState();
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getUsers: builder.query<EntityState<User>, void>({
+    getUsers: builder.query<EntityState<User>, string | void>({
       query: () => ({
         url: '/users',
         method: 'GET',

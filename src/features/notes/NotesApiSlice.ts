@@ -37,7 +37,7 @@ const initialState = notesAdapter.getInitialState();
 
 export const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getNotes: builder.query<EntityState<Note>, void>({
+    getNotes: builder.query<EntityState<Note>, string | void>({
       query: () => ({
         url: '/notes',
         method: 'GET',
