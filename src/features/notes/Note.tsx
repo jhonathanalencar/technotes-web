@@ -1,17 +1,19 @@
 import { EntityId } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { NotePencil } from 'phosphor-react';
 
-import { RootState } from '../../redux/store';
-import { selectNoteById } from './notesApiSlice';
+import { useGetNotesQuery } from './notesApiSlice';
 
 interface NoteProps {
   noteId: EntityId;
 }
 
 export function Note({ noteId }: NoteProps) {
-  const note = useSelector((state: RootState) => selectNoteById(state, noteId));
+  const { note } = useGetNotesQuery('notesList', {
+    selectFromResult: ({ data }) => ({
+      note: data?.entities[noteId],
+    }),
+  });
 
   const navigate = useNavigate();
 
