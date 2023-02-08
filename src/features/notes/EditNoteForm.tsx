@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,6 +15,7 @@ import {
   ResponseError,
   SelectInput,
 } from '../../components';
+import { useAuth } from '../../hooks/useAuth';
 
 interface EditNoteFormProps {
   note: Note;
@@ -34,6 +35,8 @@ const editNoteSchema = z.object({
 type EditNoteInputs = z.infer<typeof editNoteSchema>;
 
 export function EditNoteForm({ note, users }: EditNoteFormProps) {
+  const { isAdmin, isManager } = useAuth();
+
   const [updateNote, { isLoading, isSuccess, isError, error }] =
     useUpdateNoteMutation();
   const [
@@ -103,6 +106,15 @@ export function EditNoteForm({ note, users }: EditNoteFormProps) {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  let deleteButton: ReactNode = null;
+  if (isManager || isAdmin) {
+    deleteButton = (
+      <Button type="button" onClick={handleDeleteNote} disabled={isDelLoading}>
+        {isDelLoading ? <Loader isSmall /> : 'Deletar'}
+      </Button>
+    );
   }
 
   return (
@@ -209,13 +221,8 @@ export function EditNoteForm({ note, users }: EditNoteFormProps) {
         <Button type="submit" disabled={isSubmitting || !isValid}>
           {isLoading ? <Loader isSmall /> : 'Salvar'}
         </Button>
-        <Button
-          type="button"
-          onClick={handleDeleteNote}
-          disabled={isDelLoading}
-        >
-          {isDelLoading ? <Loader isSmall /> : 'Deletar'}
-        </Button>
+
+        {deleteButton}
       </div>
     </form>
   );
