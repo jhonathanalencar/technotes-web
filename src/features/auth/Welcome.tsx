@@ -2,9 +2,12 @@ import { dateFormatter } from '../../utils/formatter';
 
 import { DashboardLink } from '../../components';
 import { useAuth } from '../../hooks/useAuth';
+import { useTitle } from '../../hooks/useTitle';
 
 export function Welcome() {
   const { username, isAdmin, isManager } = useAuth();
+
+  useTitle(`TechNotes | ${username}`);
 
   return (
     <section className="py-4 flex items-start flex-col gap-6">

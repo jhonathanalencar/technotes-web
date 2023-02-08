@@ -2,11 +2,14 @@ import { ReactNode } from 'react';
 
 import { useGetUsersQuery } from './usersApiSlice';
 import { QueryError } from '../../shared/types';
-import { User } from './User';
+import { useTitle } from '../../hooks/useTitle';
 
+import { User } from './User';
 import { Loader, ErrorMessage, GoBackHeader } from '../../components';
 
 export function UsersList() {
+  useTitle('Usuários | TechNotes');
+
   const {
     data: users,
     isLoading,

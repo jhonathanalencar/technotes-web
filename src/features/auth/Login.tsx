@@ -1,7 +1,10 @@
 import { GoBackHeader } from '../../components';
+import { useTitle } from '../../hooks/useTitle';
 import { LoginForm } from './LoginForm';
 
 export function Login() {
+  useTitle('Login | JH Reparos');
+
   return (
     <section className="h-full flex flex-col p-4">
       <header className="border-b-2 border-gray-500 py-4 md:py-6">

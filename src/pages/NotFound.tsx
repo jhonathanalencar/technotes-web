@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { SmileySad } from 'phosphor-react';
 import { Button } from '../components';
+import { useTitle } from '../hooks/useTitle';
 
 export function NotFound() {
+  useTitle('404 | Não Encontrado');
   const navigate = useNavigate();
 
   return (

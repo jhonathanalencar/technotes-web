@@ -1,7 +1,11 @@
+import { useTitle } from '../../hooks/useTitle';
+
 import { GoBackHeader } from '../../components';
 import { NewUserForm } from './NewUserForm';
 
 export function NewUser() {
+  useTitle('Adicionar Usuário | TechNotes');
+
   return (
     <section className="h-full w-full pt-4">
       <GoBackHeader path="/dashboard">Cadastro de Usuário</GoBackHeader>

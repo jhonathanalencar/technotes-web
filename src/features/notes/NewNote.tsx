@@ -1,10 +1,13 @@
 import { useGetUsersQuery } from '../users/usersApiSlice';
 import { NewNoteForm } from './NewNoteForm';
+import { User } from '../../shared/types';
+import { useTitle } from '../../hooks/useTitle';
 
 import { ErrorMessage, GoBackHeader } from '../../components';
-import { User } from '../../shared/types';
 
 export function NewNote() {
+  useTitle('Adicionar Nota | TechNotes');
+
   const { users } = useGetUsersQuery('usersList', {
     selectFromResult: ({ data }) => ({
       users: data?.ids

@@ -6,6 +6,7 @@ import { EditNoteForm } from './EditNoteForm';
 import { useGetUsersQuery } from '../users/usersApiSlice';
 import { User } from '../../shared/types';
 import { useAuth } from '../../hooks/useAuth';
+import { useTitle } from '../../hooks/useTitle';
 
 import {
   GoBackHeader,
@@ -15,7 +16,10 @@ import {
 } from '../../components';
 
 export function EditNote() {
+  useTitle('Editar Nota | TechNotes');
+
   const { id } = useParams();
+
   const { isAdmin, isManager, username } = useAuth();
 
   const { note } = useGetNotesQuery('notesList', {

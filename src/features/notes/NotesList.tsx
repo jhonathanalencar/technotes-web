@@ -5,10 +5,13 @@ import { QueryError } from '../../shared/types';
 import { Note } from './Note';
 import { useGetNotesQuery } from './notesApiSlice';
 import { useAuth } from '../../hooks/useAuth';
+import { useTitle } from '../../hooks/useTitle';
 
 import { ErrorMessage, GoBackHeader, Loader } from '../../components';
 
 export function NotesList() {
+  useTitle('Notas | TechNotes');
+
   const { username, isAdmin, isManager } = useAuth();
 
   const {

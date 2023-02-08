@@ -2,11 +2,14 @@ import { EntityId } from '@reduxjs/toolkit';
 import { useParams } from 'react-router-dom';
 
 import { useGetUsersQuery } from './usersApiSlice';
+import { useTitle } from '../../hooks/useTitle';
 
 import { GoBackHeader, Loader, DateTimeInfo } from '../../components';
 import { EditUserForm } from './EditUserForm';
 
 export function EditUser() {
+  useTitle('Editar Usuário | TechNotes');
+
   const { id } = useParams();
 
   const { user } = useGetUsersQuery('usersList', {
