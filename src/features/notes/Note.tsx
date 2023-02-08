@@ -1,9 +1,9 @@
+import { memo } from 'react';
 import { EntityId } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
 import { NotePencil } from 'phosphor-react';
 
 import { useGetNotesQuery } from './notesApiSlice';
-import { memo } from 'react';
 
 interface NoteProps {
   noteId: EntityId;

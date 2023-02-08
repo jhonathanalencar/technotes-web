@@ -1,17 +1,20 @@
 import { EntityId } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { NotePencil } from 'phosphor-react';
 
-import { RootState } from '../../redux/store';
-import { selectUserById } from './usersApiSlice';
-import { useNavigate } from 'react-router-dom';
+import { useGetUsersQuery } from './usersApiSlice';
 
 interface UserProps {
   userId: EntityId;
 }
 
 export function User({ userId }: UserProps) {
-  const user = useSelector((state: RootState) => selectUserById(state, userId));
+  const { user } = useGetUsersQuery('usersList', {
+    selectFromResult: ({ data }) => ({
+      user: data?.entities[userId],
+    }),
+  });
+
   const navigate = useNavigate();
 
   if (!user) return null;
