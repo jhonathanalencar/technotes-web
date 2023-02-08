@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { NotePencil } from 'phosphor-react';
 
 import { useGetNotesQuery } from './notesApiSlice';
+import { memo } from 'react';
 
 interface NoteProps {
   noteId: EntityId;
 }
 
-export function Note({ noteId }: NoteProps) {
+function NoteComponent({ noteId }: NoteProps) {
   const { note } = useGetNotesQuery('notesList', {
     selectFromResult: ({ data }) => ({
       note: data?.entities[noteId],
@@ -73,3 +74,5 @@ export function Note({ noteId }: NoteProps) {
     </tr>
   );
 }
+
+export const Note = memo(NoteComponent);
