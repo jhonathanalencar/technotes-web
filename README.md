@@ -21,6 +21,26 @@ Aplicação para gerenciar notas e usuários.
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 
+## 🚀 Como executar
+
+```bash
+# Clone este repositório
+$ git clone https://github.com/jhonathanalencar/technotes-web.git
+
+# Entre na pasta
+$ cd technotes-web
+
+# Instale as dependências
+$ npm install
+
+# Preencha e copie as variáveis de ambiente do arquivo .env.example para o arquivo .env na raiz do projeto
+
+# Execute a aplicação em modo de desenvolvimento
+$ npm run dev
+
+# A aplicação inciará na porta:5173
+acesse <http://localhost:5173>
+```
 ## 📝 Licença
 
 Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
