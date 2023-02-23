@@ -12,6 +12,8 @@
 
 Aplicação para gerenciar notas e usuários.
 
+[Acesse a aplicação online](https://technotes-sy.netlify.app/)
+
 ## 🧪 Tecnologias
 
 - [TypeScript](https://www.typescriptlang.org/)
